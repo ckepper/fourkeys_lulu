@@ -26,10 +26,20 @@ WITH deploys_cloudbuild_github_gitlab AS (# Cloud Build, Github, Gitlab pipeline
          (source = "cloud_build" AND JSON_EXTRACT_SCALAR(metadata, '$.status') = "SUCCESS")
       # GitHub Deployments
       OR (source LIKE "github%" and event_type = "deployment_status" and JSON_EXTRACT_SCALAR(metadata, '$.deployment_status.state') = "success")
-      # GitLab Pipelines 
-      OR (source LIKE "gitlab%" AND event_type = "pipeline" AND JSON_EXTRACT_SCALAR(metadata, '$.object_attributes.status') = "success")
-      # GitLab Deployments 
-      OR (source LIKE "gitlab%" AND event_type = "deployment" AND JSON_EXTRACT_SCALAR(metadata, '$.status') = "success")
+      -- GitLab Pipelines
+      OR (
+        source LIKE "gitlab%"
+        AND event_type = "pipeline"
+        AND JSON_EXTRACT_SCALAR(metadata, '$.object_attributes.status') = "success"
+        AND JSON_EXTRACT_SCALAR(metadata, '$.environment') = "upp-prod"
+      )
+      -- GitLab Deployments
+      OR (
+        source LIKE "gitlab%"
+        AND event_type = "deployment"
+        AND JSON_EXTRACT_SCALAR(metadata, '$.status') = "success"
+        AND JSON_EXTRACT_SCALAR(metadata, '$.environment') = "upp-prod"
+      )
       # ArgoCD Deployments
       OR (source = "argocd" AND JSON_EXTRACT_SCALAR(metadata, '$.status') = "SUCCESS")
       )
