@@ -1,0 +1,115 @@
+{
+  "object_kind": "push",
+  "event_name": "push",
+  "before": "79353ac8b29163779f78446f7ece385b3c7db15d",
+  "after": "0f1c9a2de1e9c234b90a157ab437b53135679740",
+  "ref": "refs/heads/LU-4367/populate-project-timeline-with-events",
+  "checkout_sha": "0f1c9a2de1e9c234b90a157ab437b53135679740",
+  "message": null,
+  "user_id": 99,
+  "user_name": "Szymon Figiel",
+  "user_username": "sfigiel",
+  "user_email": "",
+  "user_avatar": "https://secure.gravatar.com/avatar/0f250efdd60af734283f00cefa6bc809?s=80&d=identicon",
+  "project_id": 1657,
+  "project": {
+    "id": 1657,
+    "name": "Graphql Admin",
+    "description": "",
+    "web_url": "https://gitlab.it.lulu.com/upp/services/graphql_admin",
+    "avatar_url": null,
+    "git_ssh_url": "git@gitlab.it.lulu.com:upp/services/graphql_admin.git",
+    "git_http_url": "https://gitlab.it.lulu.com/upp/services/graphql_admin.git",
+    "namespace": "services",
+    "visibility_level": 10,
+    "path_with_namespace": "upp/services/graphql_admin",
+    "default_branch": "master",
+    "ci_config_path": null,
+    "homepage": "https://gitlab.it.lulu.com/upp/services/graphql_admin",
+    "url": "git@gitlab.it.lulu.com:upp/services/graphql_admin.git",
+    "ssh_url": "git@gitlab.it.lulu.com:upp/services/graphql_admin.git",
+    "http_url": "https://gitlab.it.lulu.com/upp/services/graphql_admin.git"
+  },
+  "commits": [
+    {
+      "id": "eb125976da08f2141a291f1209e2f340707e49fd",
+      "message": "LU-4890 replace publicId with resourceId. Make copyrightLicenseType nullable.\n",
+      "title": "LU-4890 replace publicId with resourceId. Make copyrightLicenseType nullable.",
+      "timestamp": "2023-01-13T09:17:23+00:00",
+      "url": "https://gitlab.it.lulu.com/upp/services/graphql_admin/-/commit/eb125976da08f2141a291f1209e2f340707e49fd",
+      "author": {
+        "name": "sfigiel",
+        "email": "szymon.figiel@lulu.com"
+      },
+      "added": [],
+      "modified": [
+        "graphql_admin/resolvers/projects/types.py",
+        "graphql_admin/schema/projects/types.graphql",
+        "tests/fragments.py",
+        "tests/snapshots/snap_test_project_mutations.py",
+        "tests/snapshots/snap_test_project_queries.py",
+        "tests/test_project_mutations.py"
+      ],
+      "removed": []
+    },
+    {
+      "id": "44ad2b46a5d026cc2b56cf7e5bec1c895b488a09",
+      "message": "LU-4750 set filtered printers parameter as a list, not as a string.\n",
+      "title": "LU-4750 set filtered printers parameter as a list, not as a string.",
+      "timestamp": "2023-01-13T13:24:10+00:00",
+      "url": "https://gitlab.it.lulu.com/upp/services/graphql_admin/-/commit/44ad2b46a5d026cc2b56cf7e5bec1c895b488a09",
+      "author": {
+        "name": "sfigiel",
+        "email": "szymon.figiel@lulu.com"
+      },
+      "added": [],
+      "modified": [
+        "graphql_admin/services/search.py",
+        "tests/test_order_queries.py"
+      ],
+      "removed": []
+    },
+    {
+      "id": "0f1c9a2de1e9c234b90a157ab437b53135679740",
+      "message": "LU-4367 populate the recordTimeline query about AuditEvents. Extend the GenericRecordEvent type about event field.\n",
+      "title": "LU-4367 populate the recordTimeline query about AuditEvents. Extend the...",
+      "timestamp": "2023-01-16T08:16:31+00:00",
+      "url": "https://gitlab.it.lulu.com/upp/services/graphql_admin/-/commit/0f1c9a2de1e9c234b90a157ab437b53135679740",
+      "author": {
+        "name": "sfigiel",
+        "email": "szymon.figiel@lulu.com"
+      },
+      "added": [
+        "fixtures_sync/audit_events.py",
+        "graphql_admin/schema/timeline/enums.graphql",
+        "graphql_admin/services/telemetry.py",
+        "tests/api_data/project-gjvrgg-audit-events.json"
+      ],
+      "modified": [
+        "fixtures_sync/update_fixtures.py",
+        "graphql_admin/config.py",
+        "graphql_admin/resolvers/timeline/__init__.py",
+        "graphql_admin/resolvers/timeline/queries.py",
+        "graphql_admin/resolvers/timeline/types.py",
+        "graphql_admin/schema/timeline/queries.graphql",
+        "graphql_admin/schema/timeline/types.graphql",
+        "pytest.ini",
+        "tests/fragments.py",
+        "tests/snapshots/snap_test_timeline_queries.py",
+        "tests/test_timeline_queries.py"
+      ],
+      "removed": []
+    }
+  ],
+  "total_commits_count": 3,
+  "push_options": {},
+  "repository": {
+    "name": "Graphql Admin",
+    "url": "git@gitlab.it.lulu.com:upp/services/graphql_admin.git",
+    "description": "",
+    "homepage": "https://gitlab.it.lulu.com/upp/services/graphql_admin",
+    "git_http_url": "https://gitlab.it.lulu.com/upp/services/graphql_admin.git",
+    "git_ssh_url": "git@gitlab.it.lulu.com:upp/services/graphql_admin.git",
+    "visibility_level": 10
+  }
+}
