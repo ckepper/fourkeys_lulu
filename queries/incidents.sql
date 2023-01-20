@@ -4,7 +4,7 @@ source,
 incident_id,
 MIN(IF(root.time_created < issue.time_created, root.time_created, issue.time_created)) as time_created,
 MAX(time_resolved) as time_resolved,
-ARRAY_AGG(root_cause IGNORE NULLS) changes,
+ARRAY_AGG(coalesce(root_cause, incident_id) IGNORE NULLS) changes,
 FROM
 (
 SELECT 
