@@ -1,11 +1,12 @@
 import hashlib
 import json
-from functools import lru_cache
-from datetime import datetime
-from typing import List
+import re
 import textwrap
+from functools import lru_cache
+from typing import List
 
 import gitlab
+from gitlab.exceptions import GitlabGetError
 from gitlab.v4.objects import (
     ProjectDeployment,
     ProjectEvent,
@@ -13,6 +14,7 @@ from gitlab.v4.objects import (
     ProjectCommit,
 )
 
+from log import root_logger
 from models import (
     User,
     EventsRaw,
@@ -22,11 +24,12 @@ from models import (
     Author,
     Repository,
     DeployMetadata,
+    Incident,
+    IncidentMetadata,
 )
-from log import root_logger
-
 
 logger = root_logger.getChild("transformations")
+branch_re = re.compile(r"Merge branch .* into .*\n\n.*\n\n.* merge request .*!(\d+)")
 
 
 def get_short_name(project: Project) -> str:
@@ -105,7 +108,7 @@ def transform_deployment(d: ProjectDeployment) -> EventsRaw:
         time_created=d.attributes["updated_at"],
         signature=signature,
         msg_id=f"bulk_import_{get_short_name(project)}_{d.get_id()}",
-        source="gitlab_bulk_import",
+        source=f"gitlab_bulk_import_{get_short_name(project)}",
     )
     return e
 
@@ -174,10 +177,24 @@ def transform_event(project: GitlabProject, e: ProjectEvent) -> EventsRaw:
 def get_commits(project: GitlabProject, commit_hash: str, commits: List, count: int) -> List:
     if count == 0:
         return commits
-    commit = project.commits.get(commit_hash)
+    try:
+        commit = project.commits.get(commit_hash)
+    except GitlabGetError as e:
+        logger.error(f"Error getting commit {commit_hash}: {e}")
+        return commits
     commits.append(commit)
     count -= 1
     if len(commit.parent_ids) > 1:
+        # analyze if it's a merge commit with a regex
+        match = branch_re.match(commit.message)
+        if match:
+            # if it is, get the merge request and get the commits from there
+            mr = project.mergerequests.get(match.group(1))
+            for c in mr.commits():
+                commits.append(c)
+                count -= 1
+            logger.info(f"Found {len(mr.commits())} commits in merge request {mr.iid}")
+            return commits
         logger.info(
             f"Found {len(commit.parent_ids)} parents for {commit.get_id()}, fetching them all..."
         )
@@ -210,3 +227,19 @@ def transform_commit(c: ProjectCommit) -> Commit:
         modified=modified,
         removed=removed,
     )
+
+
+def transform_incident(i: Incident) -> EventsRaw:
+    metadata = IncidentMetadata(object_kind="incident", object_attributes=i)
+    hashed = hashlib.sha1(bytes(json.dumps(metadata.json()), "utf-8"))
+    signature = hashed.hexdigest()
+    e = EventsRaw(
+        event_type="issue",
+        id=f"issue_{i.id}",
+        metadata=metadata.json(),
+        time_created=i.created_at,
+        signature=signature,
+        msg_id=f"bulk_import_incident_{i.id}",
+        source=f"gitlab_bulk_import_incidents",
+    )
+    return e

@@ -1,10 +1,11 @@
-from pydantic import BaseModel, validator
 from datetime import datetime, timezone
 from typing import Optional, Dict, List
 
+from pydantic import BaseModel, validator
+
 
 def convert_datetime_for_bigquery(dt: datetime) -> str:
-    return dt.strftime('%Y-%m-%d %H:%M:%S')
+    return dt.strftime("%Y-%m-%d %H:%M:%S")
 
 
 def transform_to_utc_datetime(dt: datetime) -> datetime:
@@ -14,7 +15,7 @@ def transform_to_utc_datetime(dt: datetime) -> datetime:
 class Project(BaseModel):
     id: int
     name: str
-    description: str
+    description: Optional[str]
     web_url: str
     avatar_url: Optional[str]
     git_ssh_url: str
@@ -53,7 +54,9 @@ class DeployMetadata(BaseModel):
     commit_url: str
     commit_title: str
 
-    _normalize_datetimes = validator("status_changed_at", allow_reuse=True)(transform_to_utc_datetime)
+    _normalize_datetimes = validator("status_changed_at", allow_reuse=True)(
+        transform_to_utc_datetime
+    )
 
     class Config:
         json_encoders = {
@@ -90,7 +93,7 @@ class Commit(BaseModel):
 class Repository(BaseModel):
     name: str
     url: str
-    description: str
+    description: Optional[str]
     homepage: str
     git_http_url: str
     git_ssh_url: str
@@ -118,6 +121,34 @@ class PushMetadata(BaseModel):
     repository: Repository
 
 
+class Label(BaseModel):
+    title: str
+
+
+class Incident(BaseModel):
+    created_at: datetime
+    updated_at: datetime
+    closed_at: datetime
+    id: int
+    labels: List[Label]
+    description: str
+
+    _normalize_datetimes = validator("created_at", "updated_at", "closed_at", allow_reuse=True)(
+        transform_to_utc_datetime
+    )
+
+    class Config:
+        json_encoders = {
+            # custom output for BigQuery
+            datetime: convert_datetime_for_bigquery
+        }
+
+
+class IncidentMetadata(BaseModel):
+    object_kind: str
+    object_attributes: Incident
+
+
 class EventsRaw(BaseModel):
     event_type: str
     id: str
@@ -127,8 +158,7 @@ class EventsRaw(BaseModel):
     msg_id: str
     source: str
 
-    _normalize_datetimes = validator("time_created", allow_reuse=True)(
-        transform_to_utc_datetime)
+    _normalize_datetimes = validator("time_created", allow_reuse=True)(transform_to_utc_datetime)
 
     class Config:
         json_encoders = {

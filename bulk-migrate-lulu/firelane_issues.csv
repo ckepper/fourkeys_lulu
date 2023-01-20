@@ -1,0 +1,13 @@
+id,object_kind,created_at,updated_at,closed_at,title,description,duration
+1,incident,2021-10-26 14:43:00,2021-10-26 15:40:00,2021-10-26 15:40:00,Bookstore Search not working,,0:57:00
+2,incident,2022-02-10 18:40:00,2022-02-10 18:59:00,2022-02-10 18:59:00,Keycloak is down,,0:19:00
+3,incident,2022-04-19 16:46:00,2022-04-19 18:05:00,2022-04-19 18:05:00,xPress checkout broken,,1:19:00
+4,incident,2022-04-26 14:39:00,2022-04-26 16:03:00,2022-04-26 16:03:00,Broken Keycloak migration,,1:24:00
+5,incident,2022-06-21 08:54:00,2022-06-21 09:22:00,2022-06-21 09:22:00,Cloudflare is down,,0:28:00
+6,incident,2022-06-21 17:45:00,2022-06-21 19:48:00,2022-06-21 19:48:00,GraphQL issue,,2:03:00
+7,incident,2022-08-30 19:53:00,2022-08-31 14:41:00,2022-08-31 14:41:00,Shopify API issue,,18:48:00
+8,incident,2022-08-31 21:37:00,2022-08-31 23:40:00,2022-08-31 23:40:00,KiloHealth DOS attack,,2:03:00
+9,incident,2022-09-23 16:27:00,2022-09-23 16:50:00,2022-09-23 16:50:00,Failed Keycloak Deployment,,0:23:00
+10,incident,2022-10-27 15:47:00,2022-10-27 16:47:00,2022-10-27 16:47:00,Lulu-website issue,End time?,1:00:00
+11,incident,2022-11-04 16:44:00,2022-11-04 17:04:00,2022-11-04 17:04:00,Admin Permission for customer,,0:20:00
+12,incident,2023-01-19 09:55:00,2023-01-19 12:35:00,2023-01-19 12:35:00,Order-Service Migration Failed,root cause: acf7dfd5339b901ccfca0aa65855431bf619f725,2:40:00
